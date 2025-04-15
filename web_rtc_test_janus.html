@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janus WebRTC Stream</title>
+    <script src="adapter.js"></script>
+    <script src="janus.js"></script>
+    <script src="janusClient.js"></script>
+    <script src="janusStream.js"></script>
+</head>
+<body>
+    <h2>Janus WebRTC Stream</h2>
+    <div id="timestamp" style="font-size: x-large;"></div>
+    <video id="stream1" autoplay playsinline muted></video>
+    <button id="pause">pause</button>
+    <script type="module">
+        let paused = false;
+        const client = new JanusClient("ws://127.0.0.1:8188/janus");
+
+        await client.init();
+        await client.attachStream(1, document.getElementById("stream1"));
+
+        document.getElementById("pause").onclick = async () => {
+            if (paused) {
+                await client.attachStream(1, document.getElementById("stream1"));
+                paused = false;
+            } else {
+                await client.unsubscribeFrom(1);
+                paused = true;
+            }
+        };
+        client.subscribeToAll();
+
+        function updateTimestamp() {
+            document.getElementById("timestamp").innerText = performance.timeOrigin + performance.now(); // milliseconds since epoch
+            ;
+        }
+        setInterval(updateTimestamp, 50);
+    </script>
+</body>
+</html>
