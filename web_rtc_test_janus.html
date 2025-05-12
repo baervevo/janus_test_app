@@ -1,42 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Janus WebRTC Stream</title>
-    <script src="adapter.js"></script>
-    <script src="janus.js"></script>
-    <script src="janusClient.js"></script>
-    <script src="janusStream.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Janus WebRTC Stream</title>
+  <script src="adapter.js"></script>
+  <script src="janus.js"></script>
+  <script src="janusClient.js"></script>
+  <script src="janusStream.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #111;
+      color: #fff;
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      background: #000;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
-    <h2>Janus WebRTC Stream</h2>
-    <div id="timestamp" style="font-size: x-large;"></div>
-    <video id="stream1" autoplay playsinline muted></video>
-    <button id="pause">pause</button>
-    <script type="module">
-        let paused = false;
-        const client = new JanusClient("ws://127.0.0.1:8188/janus");
+  <h2>Janus WebRTC Stream</h2>
+  <div class="grid">
+    <video id="manicam_stream" autoplay playsinline muted></video>
+    <video id="mast_right_front_stream" autoplay playsinline muted></video>
+    <video id="mast_right_rear_stream" autoplay playsinline muted></video>
+    <video id="mast_left_rear_stream" autoplay playsinline muted></video>
+    <video id="mast_left_front_stream" autoplay playsinline muted></video>
+    <video id="zed_stream" autoplay playsinline muted></video>
+    <video id="realsense_stream" autoplay playsinline muted></video>
+    <video id="obrotowa_stream" autoplay playsinline muted></video>
+    <video id="rover_visualization_stream" autoplay playsinline muted></video>
+    <video id="oak_stream" autoplay playsinline muted></video>
+    <video id="birds_eye_stream" autoplay playsinline muted></video>
+  </div>
+  <button id="pause">pause</button>
 
-        await client.init();
-        await client.attachStream(1, document.getElementById("stream1"));
+  <script type="module">
+    let paused = false;
+    const client = new JanusClient("ws://10.0.0.1:8188/janus");
 
-        document.getElementById("pause").onclick = async () => {
-            if (paused) {
-                await client.attachStream(1, document.getElementById("stream1"));
-                paused = false;
-            } else {
-                await client.unsubscribeFrom(1);
-                paused = true;
-            }
-        };
-        client.subscribeToAll();
-
-        function updateTimestamp() {
-            document.getElementById("timestamp").innerText = performance.timeOrigin + performance.now(); // milliseconds since epoch
-            ;
-        }
-        setInterval(updateTimestamp, 50);
-    </script>
+    await client.init();
+    await client.attachStream(1, document.getElementById("manicam_stream"));
+    await client.attachStream(2, document.getElementById("mast_right_front_stream"));
+    await client.attachStream(3, document.getElementById("mast_right_rear_stream"));
+    await client.attachStream(4, document.getElementById("mast_left_rear_stream"));
+    await client.attachStream(5, document.getElementById("mast_left_front_stream"));
+    await client.attachStream(6, document.getElementById("zed_stream"));
+    await client.attachStream(7, document.getElementById("realsense_stream"));
+    await client.attachStream(8, document.getElementById("obrotowa_stream"));
+    await client.attachStream(9, document.getElementById("rover_visualization_stream"));
+    await client.attachStream(10, document.getElementById("oak_stream"));
+    await client.attachStream(11, document.getElementById("birds_eye_stream"));
+    
+    client.subscribeToAll();
+  </script>
 </body>
 </html>
