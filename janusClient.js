@@ -46,7 +46,7 @@ class JanusClient {
                     console.error("Error attaching plugin...", error);
                     reject(error);
                 },
-                // TODO(@mariusz): test
+                // TODO(@mariusz): test 
                 onmessage: (msg, jsep) => {
                     if (jsep) {
                         let handle = this.#streams.get(streamId).getPluginHandle();
