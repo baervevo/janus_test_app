@@ -56,7 +56,7 @@
 
   <script type="module">
     let paused = false;
-    const client = new JanusClient("ws://10.0.0.1:8188/janus");
+    const client = new JanusClient("ws://127.0.0.1:8188/janus");
 
     await client.init();
     await client.attachStream(1, document.getElementById("manicam_stream"));
